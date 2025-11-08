@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 if env.bool('REMOTE_DB'):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
+            'ENGINE': 'django.db.backends.mysql',
             'NAME': env.str('MYSQL_DATABASE'),
             'HOST': env.str('MYSQL_HOST'),
             'PORT': env.int('MYSQL_PORT'),
