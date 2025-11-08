@@ -23,5 +23,40 @@ class UserProfile(models.Model):
     age = models.PositiveIntegerField()
     followers_count = models.PositiveIntegerField()
     posts_count = models.PositiveIntegerField()
-    comments_comments = models.PositiveIntegerField()
+    comments_count = models.PositiveIntegerField()
     engagement_rate = models.FloatField()
+
+STATUS_CHOICES = [
+    ('new', 'New'),
+    ('in progress', 'In progress'),
+    ('pending', 'Pending'),
+    ('blocked', 'Blocked'),
+    ('done', 'Done')
+]
+class Category(models.Model):
+    name = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.name
+
+class Task(models.Model):
+    title = models.CharField(max_length=120)
+    description = models.TextField()
+    categories = models.ManyToManyField(Category, blank=True)
+    status = models.CharField(max_length=50,choices=STATUS_CHOICES, default='new')
+    deadline = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class SubTask(models.Model):
+    title = models.CharField(max_length=120)
+    description = models.TextField()
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='new')
+    deadline = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.title} is subtask of {self.task.title}"
