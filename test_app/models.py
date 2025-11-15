@@ -33,12 +33,23 @@ STATUS_CHOICES = [
     ('blocked', 'Blocked'),
     ('done', 'Done')
 ]
+
+#---- Category
 class Category(models.Model):
     name = models.CharField(max_length=120)
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        db_table = 'task_manager_category'
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_category_name')
+        ]
+
+#---- Task
 class Task(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
@@ -50,6 +61,15 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        db_table = 'task_manager_task'
+        verbose_name = 'Task'
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(fields=['title'], name='unique_task_title')
+        ]
+
+#---- Subtask
 class SubTask(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
@@ -60,3 +80,11 @@ class SubTask(models.Model):
 
     def __str__(self):
         return f"{self.title} is subtask of {self.task.title}"
+
+    class Meta:
+        db_table = 'task_manager_subtask'
+        verbose_name = 'Subtask'
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(fields=['title'], name='unique_subtask_title')
+        ]
