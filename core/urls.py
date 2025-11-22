@@ -16,11 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from test_app.views import TaskView, TaskIdView, TaskListView, TaskStatsView
 from test_app.views import home_page
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/admin/
+
+    path("tasks/create/", TaskView.as_view()),
+    path("tasks/", TaskListView.as_view()),
+    path("tasks/<int:task_id>/", TaskIdView.as_view()),
+    path("tasks/stats/", TaskStatsView.as_view()),
+
     path('<str:user_name>/', home_page),  # http://127.0.0.1:8000
 ]
