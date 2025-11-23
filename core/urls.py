@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from test_app.views import TaskView, TaskIdView, TaskListView, TaskStatsView, SubTaskListCreateView, \
+from test_app.views import create_task,list_task, id_task, stats_task, SubTaskListCreateView, \
     SubTaskDetailUpdateDeleteView
 from test_app.views import home_page
 
@@ -24,10 +24,10 @@ from test_app.views import home_page
 urlpatterns = [
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/admin/
 
-    path("tasks/create/", TaskView.as_view()),
-    path("tasks/", TaskListView.as_view()),
-    path("tasks/<int:task_id>/", TaskIdView.as_view()),
-    path("tasks/stats/", TaskStatsView.as_view()),
+    path("tasks/create/", create_task),
+    path("tasks/", list_task),
+    path("tasks/<int:task_id>/", id_task),
+    path("tasks/stats/", stats_task),
 
     path("subtasks/", SubTaskListCreateView.as_view()),
     path("subtasks/<int:subtask_id>/", SubTaskDetailUpdateDeleteView.as_view()),
