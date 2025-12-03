@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from test_app.views import create_task,list_task, id_task, stats_task, SubTaskListCreateView, \
-    SubTaskDetailUpdateDeleteView
+from test_app.views import create_task, list_task, id_task, stats_task, SubTaskListCreateView, \
+    SubTaskDetailUpdateDeleteView, SubTaskFilter, GetTaskList
 from test_app.views import home_page
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter()
+router.register(r"tasks_list", GetTaskList, basename="tasks-list")
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/admin/
@@ -31,6 +34,10 @@ urlpatterns = [
 
     path("subtasks/", SubTaskListCreateView.as_view()),
     path("subtasks/<int:subtask_id>/", SubTaskDetailUpdateDeleteView.as_view()),
+    path("subtask-filter/", SubTaskFilter.as_view()),
+]
 
-    path('<str:user_name>/', home_page),  # http://127.0.0.1:8000
+urlpatterns += router.urls
+
+urlpatterns += [ path('<str:user_name>/', home_page),  # http://127.0.0.1:8000
 ]
