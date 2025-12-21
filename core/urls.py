@@ -16,25 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from test_app.views import create_task, list_task, id_task, stats_task, SubTaskListCreateView, \
-    SubTaskDetailUpdateDeleteView, SubTaskFilter, GetTaskList
-from test_app.views import home_page
+from test_app.views import (TaskListCreateView, TaskDetailView,
+                            SubTaskListCreateView, SubTaskDetailView,
+                            stats_task,home_page)
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register(r"tasks_list", GetTaskList, basename="tasks-list")
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # http://127.0.0.1:8000/admin/
 
-    path("tasks/create/", create_task),
-    path("tasks/", list_task),
-    path("tasks/<int:task_id>/", id_task),
-    path("tasks/stats/", stats_task),
+    path("tasks/", TaskListCreateView.as_view(), name='task-list-create'),
+    path("tasks/<int:pk>/", TaskDetailView.as_view(), name='task-detail'),
+    path("tasks/stats/", stats_task, name='task-stats'),
 
-    path("subtasks/", SubTaskListCreateView.as_view()),
-    path("subtasks/<int:subtask_id>/", SubTaskDetailUpdateDeleteView.as_view()),
-    path("subtask-filter/", SubTaskFilter.as_view()),
+    path("subtasks/", SubTaskListCreateView.as_view(), name='subtask-list-create'),
+    path("subtasks/<int:pk>/", SubTaskDetailView.as_view(), name='subtask-detail'),
 ]
 
 urlpatterns += router.urls
